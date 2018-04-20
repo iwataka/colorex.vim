@@ -1,0 +1,95 @@
+*colorex.txt* Extra useful functionalities for Vim colorscheme
+*colorex*
+
+==============================================================================
+TOC                                                   *colorex-contents*
+
+    INTRO .......................... |colorex-intro|
+    USAGE .......................... |colorex-usage|
+    OPTIONS ........................ |colorex-options|
+    COMMANDS ....................... |colorex-commands|
+    TIPS ........................... |colorex-tips|
+
+==============================================================================
+INTRO                                                    *colorex-intro*
+
+Colorscheme is an important element for Vim editing. Once I had some
+colorscheme-related configurations in my .vimrc but decided to create this
+separate plugin called `colorex`.
+
+This plugin has several functionalities like below:
+- Save/Load your current colorscheme (automatically by default)
+- Toggle background color by executing `:ColorexToggleBackground` command
+- Switch contrast by executing `:ColorexSwitchContrast` (supporting only gruvbox and solarized)
+
+==============================================================================
+USAGE                                                    *colorex-usage*
+
+Just install this plugin and you can use the above functionalities.
+Go down for more details.
+
+==============================================================================
+OPTIONS                                                *colorex-options*
+                                               *g:colorex_cache_file_path*
+>
+    let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.cache')
+<
+This specifies the cache file for saving your current colorscheme
+
+------------------------------------------------------------------------------
+                                                *g:colorex_auto_cache*
+>
+    let g:colorex_auto_cache = 1
+<
+Colorex automatically save/load your current colorscheme if this value is 1.
+Otherwise you should execute specific commands manually to save/load it.
+
+==============================================================================
+COMMANDS                                                *colorex-commands*
+                                             *colorex-:ColorexSaveColorScheme*
+>
+    :ColorexSaveColorScheme
+<
+This saves your current colorscheme manually, including colorscheme contrast if
+you use gruvbox or solarized
+
+------------------------------------------------------------------------------
+                                             *colorex-:ColorexLoadColorScheme*
+>
+    :ColorexLoadColorScheme
+<
+This loads your saved current colorscheme manually, including colorscheme
+contrast if you use gruvbox or solarized
+
+------------------------------------------------------------------------------
+                                             *colorex-:ColorexToggleBackground*
+>
+    :ColorexToggleBackground
+<
+This toggles background color between `dark` and `light`.
+
+------------------------------------------------------------------------------
+                                             *colorex-:ColorexSwitchContrast*
+>
+    :ColorexSwitchContrast[!]
+<
+This switches colorscheme contrast. This is in ascending order if there is no
+bang and vice versa.
+>
+    :ColorexSwitchContrast [contrast name]
+<
+This switches colorscheme contrast to the specified value.
+
+==============================================================================
+TIPS                                                *colorex-tips*
+
+If you want to save/load a different colorscheme as per GUI/CUI, that's very
+easy!
+Only what you should do is just adding the below lines to your .vimrc
+>
+    if has('gui_running')
+        let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.gui.cache')
+    endif
+<
+==============================================================================
+vim:tw=78
