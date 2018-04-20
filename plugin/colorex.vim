@@ -15,6 +15,6 @@ com! -bang -nargs=* -complete=customlist,colorex#toggle_contrast_complete
 
 augroup colorex
   autocmd!
-  autocmd VimEnter * nested if g:colorex_auto_cache | call colorex#colorscheme_load() | endif
-  autocmd VimLeave * if g:colorex_auto_cache | call colorex#colorscheme_save() | endif
+  autocmd VimEnter * nested if g:colorex_auto_cache | silent call colorex#colorscheme_load() | endif
+  autocmd VimLeave * if g:colorex_auto_cache | silent call colorex#colorscheme_save() | endif
 augroup END

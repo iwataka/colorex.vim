@@ -6,6 +6,9 @@ if !exists('g:colorex_cache_file_path')
 endif
 
 fu! colorex#colorscheme_save()
+  if g:colorex_auto_cache
+    call s:warn('This saved data will be possibly overwritten.')
+  endif
   if exists('g:colors_name')
     let lines = [g:colors_name, &background]
     if g:colors_name == 'gruvbox'
@@ -38,7 +41,14 @@ endfu
 
 fu! colorex#toggle_background()
   let opposite_bg = &bg == 'dark' ? 'light' : 'dark'
+  let colors_name_before = exists('g:colors_name') ? g:colors_name : ''
   silent execute 'set background='.opposite_bg
+  let colors_name_after = exists('g:colors_name') ? g:colors_name : ''
+  " If the colorscheme doesn't support the changed background color, rollback
+  " to before
+  if !empty(colors_name_before) && colors_name_before != colors_name_after
+    silent execute 'colorscheme '.colors_name_before
+  endif
 endfu
 
 fu! colorex#switch_contrast(bang, contrast)
