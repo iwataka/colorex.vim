@@ -48,6 +48,7 @@ fu! colorex#toggle_background()
   " to before
   if !empty(colors_name_before) && colors_name_before != colors_name_after
     silent execute 'colorscheme '.colors_name_before
+    call s:warn('You cannot toggle background for the current colorscheme')
   endif
 endfu
 
