@@ -3,8 +3,8 @@ if &compatible || (exists('g:loaded_colorex') && g:loaded_colorex)
 endif
 let g:loaded_colorex = 1
 
-if !exists('g:colorex_auto_cache')
-  let g:colorex_auto_cache = 1
+if !exists('g:colorex_enable_auto_cache')
+  let g:colorex_enable_auto_cache = 1
 endif
 
 com! ColorexSaveColorScheme call colorex#colorscheme_save()
@@ -15,6 +15,6 @@ com! -bang -nargs=* -complete=customlist,colorex#toggle_contrast_complete
 
 augroup colorex
   autocmd!
-  autocmd VimEnter * nested if g:colorex_auto_cache | silent call colorex#colorscheme_load() | endif
-  autocmd VimLeave * if g:colorex_auto_cache | silent call colorex#colorscheme_save() | endif
+  autocmd VimEnter * nested if g:colorex_enable_auto_cache | silent call colorex#colorscheme_load() | endif
+  autocmd VimLeave * if g:colorex_enable_auto_cache | silent call colorex#colorscheme_save() | endif
 augroup END

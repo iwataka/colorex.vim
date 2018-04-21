@@ -2,40 +2,54 @@ let s:save_cpo = &cpoptions
 set cpoptions&vim
 
 if !exists('g:colorex_cache_file_path')
-  let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.cache')
+  let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.vim')
+endif
+
+if !exists('g:colorex_enable_cache_colorscheme_options')
+  let g:colorex_enable_cache_colorscheme_options = 1
 endif
 
 fu! colorex#colorscheme_save()
+  if exists('g:colors_name') && !empty(g:colors_name)
+    let enable_cache_colorscheme_options = get(g:, 'colorex_enable_cache_colorscheme_options')
+    let lines = enable_cache_colorscheme_options ?
+          \ s:get_option_lines_for_specified_colorscheme(g:colors_name) : []
+    let colors_name_line = printf('colorscheme %s', g:colors_name)
+    let background_line = printf('set background=%s', &bg)
+    let lines += [colors_name_line, background_line]
+    call writefile(lines, s:get_cache_file_path())
+  else
+    call s:warn('Please select colorscheme and then re-execute')
+    return
+  endif
   if g:colorex_auto_cache
     call s:warn('This saved data will be possibly overwritten.')
   endif
-  if exists('g:colors_name')
-    let lines = [g:colors_name, &background]
-    if g:colors_name == 'gruvbox'
-      if g:colors_name == 'gruvbox'
-        silent execute 'let lines += [g:gruvbox_contrast_'.&bg.']'
-      elseif g:colors_name == 'solarized'
-        let lines += [g:solarized_contrast]
-      endif
+endfu
+
+fu! s:get_option_lines_for_specified_colorscheme(colors_name)
+  let colors_name_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
+  for colors_name_key in colors_name_keys
+    let val = get(g:, colors_name_key)
+    if type(val) == type('')
+      let lines += [printf("let g:%s = '%s'", colors_name_key, val)]
+    elseif type(val) == type(0)
+      let lines += [printf("let g:%s = %s", colors_name_key, val)]
     endif
-    call writefile(lines, g:colorex_cache_file_path)
-  endif
+  endfor
 endfu
 
 fu! colorex#colorscheme_load()
-  if filereadable(g:colorex_cache_file_path)
-    let lines = readfile(g:colorex_cache_file_path)
-    silent execute 'colorscheme '.lines[0]
-    if len(lines) >= 3
-      if exists('g:colors_name')
-        if g:colors_name == 'gruvbox'
-          silent execute "let g:gruvbox_contrast_".&bg." = '".lines[2]."'"
-        elseif g:colors_name == 'solarized'
-          let g:solarized_contrast = lines[2]
-        endif
-      endif
-    endif
-    silent execute 'set background='.lines[1]
+  if filereadable(s:get_cache_file_path())
+    execute printf('source %s', s:get_cache_file_path())
+  endif
+endfu
+
+fu! s:get_cache_file_path()
+  if fnamemodify(g:colorex_cache_file_path, ':e') == 'vim'
+    return g:colorex_cache_file_path
+  else
+    return g:colorex_cache_file_path + '.vim'
   endif
 endfu
 

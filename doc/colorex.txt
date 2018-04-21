@@ -37,12 +37,20 @@ OPTIONS                                                *colorex-options*
 This specifies the cache file for saving your current colorscheme
 
 ------------------------------------------------------------------------------
-                                                *g:colorex_auto_cache*
+                                                *g:colorex_enable_auto_cache*
 >
-    let g:colorex_auto_cache = 1
+    let g:colorex_enable_auto_cache = 1
 <
 Colorex automatically save/load your current colorscheme if this value is 1.
 Otherwise you should execute specific commands manually to save/load it.
+
+------------------------------------------------------------------------------
+                                 *g:colorex_enable_cache_colorscheme_options*
+>
+    let g:colorex_enable_cache_colorscheme_options = 1
+<
+Colorex automatically save/load global options for your current colorscheme if
+this value is 1.
 
 ==============================================================================
 COMMANDS                                                *colorex-commands*
@@ -88,7 +96,7 @@ easy!
 Only what you should do is just adding the below lines to your .vimrc
 >
     if has('gui_running')
-        let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.gui.cache')
+        let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.gui.vim')
     endif
 <
 ==============================================================================
