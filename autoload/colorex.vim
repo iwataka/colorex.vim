@@ -11,8 +11,7 @@ endif
 
 fu! colorex#colorscheme_save()
   if exists('g:colors_name') && !empty(g:colors_name)
-    let enable_cache_colorscheme_options = get(g:, 'colorex_enable_cache_colorscheme_options')
-    let lines = enable_cache_colorscheme_options ?
+    let lines = g:colorex_enable_cache_colorscheme_options ?
           \ s:get_option_lines_for_specified_colorscheme(g:colors_name) : []
     let colors_name_line = printf('colorscheme %s', g:colors_name)
     let background_line = printf('set background=%s', &bg)
