@@ -22,12 +22,13 @@ fu! colorex#colorscheme_save()
     call s:warn('Please select colorscheme and then re-execute')
     return
   endif
-  if g:colorex_auto_cache
+  if g:colorex_enable_auto_cache
     call s:warn('This saved data will be possibly overwritten.')
   endif
 endfu
 
 fu! s:get_option_lines_for_specified_colorscheme(colors_name)
+  let lines = []
   let colors_name_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
   for colors_name_key in colors_name_keys
     let val = get(g:, colors_name_key)
@@ -37,6 +38,7 @@ fu! s:get_option_lines_for_specified_colorscheme(colors_name)
       let lines += [printf("let g:%s = %s", colors_name_key, val)]
     endif
   endfor
+  return lines
 endfu
 
 fu! colorex#colorscheme_load()
