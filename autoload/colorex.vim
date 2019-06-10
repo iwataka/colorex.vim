@@ -9,24 +9,28 @@ if !exists('g:colorex_enable_cache_colorscheme_options')
   let g:colorex_enable_cache_colorscheme_options = 1
 endif
 
-fu! colorex#colorscheme_save()
-  if exists('g:colors_name') && !empty(g:colors_name)
-    let lines = g:colorex_enable_cache_colorscheme_options ?
-          \ s:get_option_lines_for_specified_colorscheme(g:colors_name) : []
-    let colors_name_line = printf('colorscheme %s', g:colors_name)
-    let background_line = printf('set background=%s', &bg)
-    let lines += [colors_name_line, background_line]
+fu! colorex#save()
+  let lines = s:get_colorscheme_lines() + s:get_airline_lines()
+  if !empty(lines)
     call writefile(lines, s:get_cache_file_path())
-  else
-    call s:warn('Please select colorscheme and then re-execute')
-    return
-  endif
-  if g:colorex_enable_auto_cache
-    call s:warn('This saved data will be possibly overwritten.')
+    if g:colorex_enable_auto_cache
+      call s:warn('This saved data will be overwritten on save.')
+    endif
   endif
 endfu
 
-fu! s:get_option_lines_for_specified_colorscheme(colors_name)
+fu! s:get_colorscheme_lines()
+  if exists('g:colors_name') && !empty(g:colors_name)
+    let option_lines = g:colorex_enable_cache_colorscheme_options ?
+          \ s:get_colorscheme_option_lines(g:colors_name) : []
+    let colors_name_line = printf('colorscheme %s', g:colors_name)
+    let background_line = printf('set background=%s', &bg)
+    return option_lines + [colors_name_line, background_line]
+  endif
+  return []
+endfu
+
+fu! s:get_colorscheme_option_lines(colors_name)
   let lines = []
   let colors_name_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
   for colors_name_key in colors_name_keys
@@ -40,7 +44,15 @@ fu! s:get_option_lines_for_specified_colorscheme(colors_name)
   return lines
 endfu
 
-fu! colorex#colorscheme_load()
+fu! s:get_airline_lines()
+  if has_key(g:, 'airline_theme')
+    let theme = get(g:, 'airline_theme')
+    return [printf('AirlineTheme %s', theme)]
+  endif
+  return []
+endfu
+
+fu! colorex#load()
   if filereadable(s:get_cache_file_path())
     execute printf('source %s', s:get_cache_file_path())
   endif

@@ -18,7 +18,7 @@ colorscheme-related configurations in my .vimrc but decided to create this
 separate plugin called `colorex`.
 
 This plugin has several functionalities like below:
-- Save/Load your current colorscheme (automatically by default)
+- Save/Load your current colorscheme and airline theme (automatically on start/quit by default)
 - Toggle background color by executing `:ColorexToggleBackground` command
 - Switch contrast by executing `:ColorexSwitchContrast` (supporting only gruvbox and solarized)
 
@@ -41,8 +41,9 @@ This specifies the cache file for saving your current colorscheme
 >
     let g:colorex_enable_auto_cache = 1
 <
-Colorex automatically save/load your current colorscheme if this value is 1.
-Otherwise you should execute specific commands manually to save/load it.
+Colorex automatically save/load your current colorscheme and airline theme if
+this value is 1. Otherwise you should execute specific commands manually to
+save/load it.
 
 ------------------------------------------------------------------------------
                                  *g:colorex_enable_cache_colorscheme_options*
@@ -56,18 +57,18 @@ this value is 1.
 COMMANDS                                                *colorex-commands*
                                              *colorex-:ColorexSaveColorScheme*
 >
-    :ColorexSaveColorScheme
+    :ColorexSave
 <
-This saves your current colorscheme manually, including colorscheme contrast if
-you use gruvbox or solarized
+This saves your current colorscheme and airline theme manually, including
+colorscheme contrast if you use gruvbox or solarized
 
 ------------------------------------------------------------------------------
                                              *colorex-:ColorexLoadColorScheme*
 >
-    :ColorexLoadColorScheme
+    :ColorexLoad
 <
-This loads your saved current colorscheme manually, including colorscheme
-contrast if you use gruvbox or solarized
+This loads your saved current colorscheme and airline theme manually,
+including colorscheme contrast if you use gruvbox or solarized
 
 ------------------------------------------------------------------------------
                                              *colorex-:ColorexToggleBackground*

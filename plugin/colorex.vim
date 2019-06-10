@@ -7,14 +7,14 @@ if !exists('g:colorex_enable_auto_cache')
   let g:colorex_enable_auto_cache = 1
 endif
 
-com! ColorexSaveColorScheme call colorex#colorscheme_save()
-com! ColorexLoadColorScheme call colorex#colorscheme_load()
+com! ColorexSave call colorex#save()
+com! ColorexLoad call colorex#load()
 com! ColorexToggleBackground call colorex#toggle_background()
 com! -bang -nargs=* -complete=customlist,colorex#toggle_contrast_complete
       \ ColorexSwitchContrast call colorex#switch_contrast(<q-bang>, <q-args>)
 
 augroup colorex
   autocmd!
-  autocmd VimEnter * nested if g:colorex_enable_auto_cache | silent call colorex#colorscheme_load() | endif
-  autocmd VimLeave * if g:colorex_enable_auto_cache | silent call colorex#colorscheme_save() | endif
+  autocmd VimEnter * nested if g:colorex_enable_auto_cache | silent call colorex#load() | endif
+  autocmd VimLeave * if g:colorex_enable_auto_cache | silent call colorex#save() | endif
 augroup END
