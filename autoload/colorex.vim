@@ -47,7 +47,7 @@ endfu
 fu! s:get_airline_lines()
   if has_key(g:, 'airline_theme')
     let theme = get(g:, 'airline_theme')
-    return [printf('AirlineTheme %s', theme)]
+    return [printf("silent! exe 'AirlineTheme %s'", theme)]
   endif
   return []
 endfu
