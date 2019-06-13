@@ -20,7 +20,8 @@ separate plugin called `colorex`.
 This plugin has several functionalities like below:
 - Save/Load your current colorscheme and airline theme (automatically on start/quit by default)
 - Toggle background color by executing `:ColorexToggleBackground` command
-- Switch contrast by executing `:ColorexSwitchContrast` (supporting only gruvbox and solarized)
+- Switch contrast by executing `:ColorexSwitchContrast` (supporting only
+  gruvbox, solarized and NeoSolarized)
 
 ==============================================================================
 USAGE                                                    *colorex-usage*
@@ -59,16 +60,14 @@ COMMANDS                                                *colorex-commands*
 >
     :ColorexSave
 <
-This saves your current colorscheme and airline theme manually, including
-colorscheme contrast if you use gruvbox or solarized
+This saves your current colorscheme and airline theme manually.
 
 ------------------------------------------------------------------------------
                                              *colorex-:ColorexLoadColorScheme*
 >
     :ColorexLoad
 <
-This loads your saved current colorscheme and airline theme manually,
-including colorscheme contrast if you use gruvbox or solarized
+This loads your saved current colorscheme and airline theme manually.
 
 ------------------------------------------------------------------------------
                                              *colorex-:ColorexToggleBackground*

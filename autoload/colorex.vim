@@ -87,9 +87,12 @@ fu! colorex#switch_contrast(bang, contrast)
   endif
 endfu
 
+let s:solarized_contrasts = ['low', 'normal', 'high']
+
 let s:colorex_contrast_list_map = {
       \ 'gruvbox': ['soft', 'medium', 'hard'],
-      \ 'solarized': ['low', 'normal', 'high']
+      \ 'solarized': s:solarized_contrasts,
+      \ 'NeoSolarized': s:solarized_contrasts,
       \ }
 
 fu! colorex#toggle_contrast(incr)
@@ -98,8 +101,9 @@ fu! colorex#toggle_contrast(incr)
       exe 'let current_contrast = g:gruvbox_contrast_'.&bg
       call s:toggle_contrast(a:incr, current_contrast)
     elseif g:colors_name == 'solarized'
-      let current_contrast = g:solarized_contrast
-      call s:toggle_contrast(a:incr, current_contrast)
+      call s:toggle_contrast(a:incr, g:solarized_contrast)
+    elseif g:colors_name == 'NeoSolarized'
+      call s:toggle_contrast(a:incr, g:neosolarized_contrast)
     else
       call s:warn(g:colors_name.' is not supported.')
     endif
@@ -122,6 +126,10 @@ fu! colorex#set_contrast(contrast)
       let g:solarized_contrast = a:contrast
       colorscheme solarized
       redraw | echo 'Current contrast: '.g:solarized_contrast
+    elseif g:colors_name == 'NeoSolarized'
+      let g:neosolarized_contrast = a:contrast
+      colorscheme NeoSolarized
+      redraw | echo 'Current contrast: '.g:neosolarized_contrast
     endif
   endif
 endfu
