@@ -18,10 +18,11 @@ colorscheme-related configurations in my .vimrc but decided to create this
 separate plugin called `colorex`.
 
 This plugin has several functionalities like below:
-- Save/Load your current colorscheme and airline theme (automatically on start/quit by default)
+- Save/Load your current colorscheme and airline theme (automatically on
+  start/quit by default)
 - Toggle background color by executing `:ColorexToggleBackground` command
-- Switch contrast by executing `:ColorexSwitchContrast` (supporting only
-  gruvbox, solarized and NeoSolarized)
+- Switch contrast by executing `:ColorexSwitchContrast` (supporting gruvbox,
+  solarized and NeoSolarized)
 
 ==============================================================================
 USAGE                                                    *colorex-usage*
@@ -51,8 +52,8 @@ save/load it.
 >
     let g:colorex_enable_cache_colorscheme_options = 1
 <
-Colorex automatically save/load global options for your current colorscheme if
-this value is 1.
+Colorex automatically save/load global options for your current colorscheme
+and keep them even after changing colorscheme if this value is 1.
 
 ==============================================================================
 COMMANDS                                                *colorex-commands*

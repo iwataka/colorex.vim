@@ -9,7 +9,7 @@ separate plugin called `colorex`.
 This plugin has several functionalities like below:
 - Save/Load your current colorscheme and airline theme (automatically start/quit by default)
 - Toggle background color by executing `:ColorexToggleBackground` command
-- Switch contrast by executing `:ColorexSwitchContrast` (supporting only gruvbox, solarized and NeoSolarized)
+- Switch contrast by executing `:ColorexSwitchContrast` (supporting gruvbox, solarized and NeoSolarized)
 
 ## Installation
 

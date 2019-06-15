@@ -9,6 +9,9 @@ if !exists('g:colorex_enable_cache_colorscheme_options')
   let g:colorex_enable_cache_colorscheme_options = 1
 endif
 
+" The name of global variable storing all colorscheme options.
+let s:option_map_key_name = '_colorex_colorscheme_option_map'
+
 fu! colorex#save()
   let lines = s:get_colorscheme_lines() + s:get_airline_lines()
   if !empty(lines)
@@ -31,17 +34,15 @@ fu! s:get_colorscheme_lines()
 endfu
 
 fu! s:get_colorscheme_option_lines(colors_name)
-  let lines = []
-  let colors_name_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
-  for colors_name_key in colors_name_keys
-    let val = get(g:, colors_name_key)
-    if type(val) == type('')
-      let lines += [printf("let g:%s = '%s'", colors_name_key, val)]
-    elseif type(val) == type(0)
-      let lines += [printf("let g:%s = %s", colors_name_key, val)]
-    endif
+  let cur_option_keys = keys(get(g:, s:option_map_key_name, {}))
+  let new_option_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
+  let option_keys = uniq(cur_option_keys + new_option_keys)
+  let valid_option_keys = filter(option_keys, 'has_key(g:, v:val)')
+  let option_map = {}
+  for key in valid_option_keys
+    let option_map[key] = get(g:, key)
   endfor
-  return lines
+  return [printf('let g:%s = %s', s:option_map_key_name, string(option_map))]
 endfu
 
 fu! s:get_airline_lines()
@@ -56,6 +57,7 @@ fu! colorex#load()
   if filereadable(s:get_cache_file_path())
     execute printf('source %s', s:get_cache_file_path())
   endif
+  call extend(g:, get(g:, s:option_map_key_name), 'keep')
 endfu
 
 fu! s:get_cache_file_path()
