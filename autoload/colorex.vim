@@ -57,7 +57,7 @@ fu! colorex#load()
   if filereadable(s:get_cache_file_path())
     execute printf('source %s', s:get_cache_file_path())
   endif
-  call extend(g:, get(g:, s:option_map_key_name), 'keep')
+  call extend(g:, get(g:, s:option_map_key_name, {}), 'keep')
 endfu
 
 fu! s:get_cache_file_path()
