@@ -22,10 +22,15 @@ fu! colorex#save()
   endif
 endfu
 
+fu! colorex#clear()
+  call delete(s:get_cache_file_path())
+  unlet g:[s:option_map_key_name]
+endfu
+
 fu! s:get_colorscheme_lines()
-  if exists('g:colors_name') && !empty(g:colors_name)
+  if has_key(g:, 'colors_name') && !empty(g:colors_name)
     let option_lines = g:colorex_enable_cache_colorscheme_options ?
-          \ s:get_colorscheme_option_lines(g:colors_name) : []
+          \ s:get_colorscheme_option_lines() : []
     let colors_name_line = printf('colorscheme %s', g:colors_name)
     let background_line = printf('set background=%s', &bg)
     return option_lines + [colors_name_line, background_line]
@@ -37,11 +42,15 @@ let s:extra_colorscheme_option_keys = {
       \ 'ayu': ['ayucolor'],
       \ }
 
-fu! s:get_colorscheme_option_lines(colors_name)
+fu! s:get_var_prefix()
+  return printf('%s_', substitute(tolower(g:colors_name), '-', '_', 'g'))
+endfu
+
+fu! s:get_colorscheme_option_lines()
   let cur_option_keys = keys(get(g:, s:option_map_key_name, {}))
-  let new_option_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
-  if has_key(s:extra_colorscheme_option_keys, a:colors_name)
-    call extend(new_option_keys, s:extra_colorscheme_option_keys[a:colors_name])
+  let new_option_keys = filter(keys(g:), printf("v:val =~ '^%s'", s:get_var_prefix()))
+  if has_key(s:extra_colorscheme_option_keys, g:colors_name)
+    call extend(new_option_keys, s:extra_colorscheme_option_keys[g:colors_name])
   endif
   let option_keys = uniq(cur_option_keys + new_option_keys)
   let valid_option_keys = filter(option_keys, 'has_key(g:, v:val)')
@@ -65,7 +74,7 @@ endfu
 
 fu! colorex#load()
   if filereadable(s:get_cache_file_path())
-    execute printf('source %s', s:get_cache_file_path())
+    exe printf('source %s', s:get_cache_file_path())
   endif
 endfu
 
@@ -83,13 +92,13 @@ fu! colorex#toggle_background()
     return
   endif
   let opposite_bg = &bg == 'dark' ? 'light' : 'dark'
-  let colors_name_before = exists('g:colors_name') ? g:colors_name : ''
-  silent execute 'set background='.opposite_bg
-  let colors_name_after = exists('g:colors_name') ? g:colors_name : ''
+  let colors_name_before = has_key(g:, 'colors_name') ? g:colors_name : ''
+  silent exe 'set background='.opposite_bg
+  let colors_name_after = has_key(g:, 'colors_name') ? g:colors_name : ''
   " If the colorscheme doesn't support the changed background color, rollback
   " to before
   if !empty(colors_name_before) && colors_name_before != colors_name_after
-    silent execute 'colorscheme '.colors_name_before
+    silent exe 'colorscheme '.colors_name_before
     call s:warn('You cannot toggle background for the current colorscheme')
   endif
 endfu
@@ -100,7 +109,7 @@ fu! s:toggle_background_for_ayu()
   let color = get(g:, 'ayucolor', s:ayu_colors[0])
   let next_color = s:ayu_colors[(index(s:ayu_colors, color) + 1) % 3]
   let g:ayucolor = next_color
-  silent execute 'colorscheme ayu'
+  silent exe 'colorscheme ayu'
 endfu
 
 fu! colorex#switch_contrast(bang, contrast)
@@ -112,25 +121,36 @@ fu! colorex#switch_contrast(bang, contrast)
 endfu
 
 let s:solarized_contrasts = ['low', 'normal', 'high']
+let s:gruvbox_contrasts = ['soft', 'medium', 'hard']
 
 let s:colorex_contrast_list_map = {
-      \ 'gruvbox': ['soft', 'medium', 'hard'],
+      \ 'gruvbox': s:gruvbox_contrasts,
+      \ 'gruvbox-material': s:gruvbox_contrasts,
       \ 'solarized': s:solarized_contrasts,
       \ 'NeoSolarized': s:solarized_contrasts,
       \ }
 
-fu! colorex#toggle_contrast(incr)
-  if exists('g:colors_name')
+fu! s:can_switch_contrast()
+  return has_key(s:colorex_contrast_list_map, g:colors_name)
+endfu
+
+fu! s:get_contrast_varname()
+  if s:can_switch_contrast()
     if g:colors_name == 'gruvbox'
-      exe 'let current_contrast = g:gruvbox_contrast_'.&bg
-      call s:toggle_contrast(a:incr, current_contrast)
-    elseif g:colors_name == 'solarized'
-      call s:toggle_contrast(a:incr, g:solarized_contrast)
-    elseif g:colors_name == 'NeoSolarized'
-      call s:toggle_contrast(a:incr, g:neosolarized_contrast)
+      return 'gruvbox_contrast_'.&background
+    elseif g:colors_name == 'gruvbox-material'
+      return 'gruvbox_material_background'
     else
-      call s:warn(g:colors_name.' is not supported.')
+      return s:get_var_prefix().'contrast'
     endif
+  endif
+endfu
+
+fu! colorex#toggle_contrast(incr)
+  if s:can_switch_contrast()
+    call s:toggle_contrast(a:incr, get(g:, s:get_contrast_varname()))
+  else
+    call s:warn(g:colors_name.' is not supported.')
   endif
 endfu
 
@@ -141,26 +161,18 @@ fu! s:toggle_contrast(incr, current_contrast)
 endfu
 
 fu! colorex#set_contrast(contrast)
-  if exists('g:colors_name')
-    if g:colors_name == 'gruvbox'
-      exe 'let g:gruvbox_contrast_'.&bg.' = "'.a:contrast.'"'
-      colorscheme gruvbox
-      redraw | exe 'echo "Current contrast: ".g:gruvbox_contrast_'.&bg
-    elseif g:colors_name == 'solarized'
-      let g:solarized_contrast = a:contrast
-      colorscheme solarized
-      redraw | echo 'Current contrast: '.g:solarized_contrast
-    elseif g:colors_name == 'NeoSolarized'
-      let g:neosolarized_contrast = a:contrast
-      colorscheme NeoSolarized
-      redraw | echo 'Current contrast: '.g:neosolarized_contrast
-    endif
+  if s:can_switch_contrast()
+    let varname = s:get_contrast_varname()
+    let g:[varname] = a:contrast
+    echo printf('Current contrast: %s', get(g:, varname))
+    silent exe 'colorscheme '.g:colors_name
   endif
 endfu
 
 fu! colorex#toggle_contrast_complete(A, L, P)
-  if g:colors_name == 'gruvbox' || g:colors_name == 'solarized'
-    return filter(s:colorex_contrast_list_map[g:colors_name], 'v:val =~ "'.a:A.'"')
+  if s:can_switch_contrast()
+    let cands = copy(s:colorex_contrast_list_map[g:colors_name])
+    return filter(cands, 'v:val =~ "'.a:A.'"')
   endif
 endfu
 

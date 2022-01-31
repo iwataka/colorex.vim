@@ -9,6 +9,7 @@ endif
 
 com! ColorexSave call colorex#save()
 com! ColorexLoad call colorex#load()
+com! ColorexClear call colorex#clear()
 com! ColorexToggleBackground call colorex#toggle_background()
 com! -bang -nargs=* -complete=customlist,colorex#toggle_contrast_complete
       \ ColorexSwitchContrast call colorex#switch_contrast(<q-bang>, <q-args>)

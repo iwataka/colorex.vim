@@ -2,7 +2,7 @@
 *colorex*
 
 ==============================================================================
-TOC                                                   *colorex-contents*
+TOC                                                         *colorex-contents*
 
     INTRO .......................... |colorex-intro|
     USAGE .......................... |colorex-usage|
@@ -11,7 +11,7 @@ TOC                                                   *colorex-contents*
     TIPS ........................... |colorex-tips|
 
 ==============================================================================
-INTRO                                                    *colorex-intro*
+INTRO                                                          *colorex-intro*
 
 This plugin has several colorscheme-related functionalities like below:
 
@@ -23,21 +23,21 @@ This plugin has several colorscheme-related functionalities like below:
     - supports gruvbox, solarized and NeoSolarized
 
 ==============================================================================
-USAGE                                                    *colorex-usage*
+USAGE                                                          *colorex-usage*
 
 Just install this plugin and you can use the above functionalities.
 Go down for more details.
 
 ==============================================================================
-OPTIONS                                                *colorex-options*
-                                               *g:colorex_cache_file_path*
+OPTIONS                                                      *colorex-options*
+                                                   *g:colorex_cache_file_path*
 >
     let g:colorex_cache_file_path = expand('~/.vim/.colorscheme.cache')
 <
 This specifies the cache file for saving your current colorscheme
 
 ------------------------------------------------------------------------------
-                                                *g:colorex_enable_auto_cache*
+                                                 *g:colorex_enable_auto_cache*
 >
     let g:colorex_enable_auto_cache = 1
 <
@@ -46,7 +46,7 @@ this value is 1. Otherwise you should execute specific commands manually to
 save/load it.
 
 ------------------------------------------------------------------------------
-                                 *g:colorex_enable_cache_colorscheme_options*
+                                  *g:colorex_enable_cache_colorscheme_options*
 >
     let g:colorex_enable_cache_colorscheme_options = 1
 <
@@ -54,22 +54,29 @@ Colorex automatically save/load global options for your current colorscheme
 and keep them even after changing colorscheme if this value is 1.
 
 ==============================================================================
-COMMANDS                                                *colorex-commands*
-                                             *colorex-:ColorexSaveColorScheme*
+COMMANDS                                                    *colorex-commands*
+                                                        *colorex-:ColorexSave*
 >
     :ColorexSave
 <
 This saves your current colorscheme and airline theme manually.
 
 ------------------------------------------------------------------------------
-                                             *colorex-:ColorexLoadColorScheme*
+                                                        *colorex-:ColorexLoad*
 >
     :ColorexLoad
 <
 This loads your saved current colorscheme and airline theme manually.
 
 ------------------------------------------------------------------------------
-                                             *colorex-:ColorexToggleBackground*
+                                                       *colorex-:ColorexClear*
+>
+    :ColorexClear
+<
+This clears all data cached by Colorex.
+
+------------------------------------------------------------------------------
+                                            *colorex-:ColorexToggleBackground*
 >
     :ColorexToggleBackground
 <
@@ -77,7 +84,7 @@ This toggles background color between `dark` and `light`
 (`dark`, `mirage` and `light` for ayu colorscheme).
 
 ------------------------------------------------------------------------------
-                                             *colorex-:ColorexSwitchContrast*
+                                              *colorex-:ColorexSwitchContrast*
 >
     :ColorexSwitchContrast[!]
 <
@@ -89,7 +96,7 @@ bang and vice versa.
 This switches colorscheme contrast to the specified value.
 
 ==============================================================================
-TIPS                                                *colorex-tips*
+TIPS                                                            *colorex-tips*
 
 If you want to save/load a different colorscheme as per GUI/CUI, that's very
 easy!
