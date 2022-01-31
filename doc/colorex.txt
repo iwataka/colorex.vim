@@ -1,4 +1,4 @@
-*colorex.txt* Extra useful functionalities for Vim colorscheme
+*colorex.txt* Makes using Vim's colorscheme more fun
 *colorex*
 
 ==============================================================================
@@ -13,16 +13,14 @@ TOC                                                   *colorex-contents*
 ==============================================================================
 INTRO                                                    *colorex-intro*
 
-Colorscheme is an important element for Vim editing. Once I had some
-colorscheme-related configurations in my .vimrc but decided to create this
-separate plugin called `colorex`.
+This plugin has several colorscheme-related functionalities like below:
 
-This plugin has several functionalities like below:
-- Save/Load your current colorscheme and airline theme (automatically on
-  start/quit by default)
+- Save/Load your current colorscheme and airline theme (automatically when starting/quitting by default)
+    - now no need to change colorscheme settings again and again in your `.vimrc`
 - Toggle background color by executing `:ColorexToggleBackground` command
-- Switch contrast by executing `:ColorexSwitchContrast` (supporting gruvbox,
-  solarized and NeoSolarized)
+    - supports ayu's dark/mirage/light
+- Switch contrast by executing `:ColorexSwitchContrast`
+    - supports gruvbox, solarized and NeoSolarized
 
 ==============================================================================
 USAGE                                                    *colorex-usage*
@@ -75,7 +73,8 @@ This loads your saved current colorscheme and airline theme manually.
 >
     :ColorexToggleBackground
 <
-This toggles background color between `dark` and `light`.
+This toggles background color between `dark` and `light`
+(`dark`, `mirage` and `light` for ayu colorscheme).
 
 ------------------------------------------------------------------------------
                                              *colorex-:ColorexSwitchContrast*

@@ -33,16 +33,26 @@ fu! s:get_colorscheme_lines()
   return []
 endfu
 
+let s:extra_colorscheme_option_keys = {
+      \ 'ayu': ['ayucolor'],
+      \ }
+
 fu! s:get_colorscheme_option_lines(colors_name)
   let cur_option_keys = keys(get(g:, s:option_map_key_name, {}))
   let new_option_keys = filter(keys(g:), printf("v:val =~ '^%s_'", a:colors_name))
+  if has_key(s:extra_colorscheme_option_keys, a:colors_name)
+    call extend(new_option_keys, s:extra_colorscheme_option_keys[a:colors_name])
+  endif
   let option_keys = uniq(cur_option_keys + new_option_keys)
   let valid_option_keys = filter(option_keys, 'has_key(g:, v:val)')
   let option_map = {}
   for key in valid_option_keys
     let option_map[key] = get(g:, key)
   endfor
-  return [printf('let g:%s = %s', s:option_map_key_name, string(option_map))]
+  return [
+        \ printf('let g:%s = %s', s:option_map_key_name, string(option_map)),
+        \ printf("call extend(g:, get(g:, '%s', {}), 'keep')", s:option_map_key_name),
+        \ ]
 endfu
 
 fu! s:get_airline_lines()
@@ -57,7 +67,6 @@ fu! colorex#load()
   if filereadable(s:get_cache_file_path())
     execute printf('source %s', s:get_cache_file_path())
   endif
-  call extend(g:, get(g:, s:option_map_key_name, {}), 'keep')
 endfu
 
 fu! s:get_cache_file_path()
@@ -69,6 +78,10 @@ fu! s:get_cache_file_path()
 endfu
 
 fu! colorex#toggle_background()
+  if g:colors_name == 'ayu'
+    call s:toggle_background_for_ayu()
+    return
+  endif
   let opposite_bg = &bg == 'dark' ? 'light' : 'dark'
   let colors_name_before = exists('g:colors_name') ? g:colors_name : ''
   silent execute 'set background='.opposite_bg
@@ -79,6 +92,15 @@ fu! colorex#toggle_background()
     silent execute 'colorscheme '.colors_name_before
     call s:warn('You cannot toggle background for the current colorscheme')
   endif
+endfu
+
+let s:ayu_colors = ['dark', 'mirage', 'light']
+
+fu! s:toggle_background_for_ayu()
+  let color = get(g:, 'ayucolor', s:ayu_colors[0])
+  let next_color = s:ayu_colors[(index(s:ayu_colors, color) + 1) % 3]
+  let g:ayucolor = next_color
+  silent execute 'colorscheme ayu'
 endfu
 
 fu! colorex#switch_contrast(bang, contrast)

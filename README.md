@@ -1,20 +1,21 @@
 # Colorex.vim
 
+Makes using Vim's colorscheme more fun
+
 ## Introduction
 
-Colorscheme is an important element for Vim editing. Once I had some
-colorscheme-related configurations in my .vimrc but decided to create this
-separate plugin called `colorex`.
+This plugin has several colorscheme-related functionalities like below:
 
-This plugin has several functionalities like below:
-- Save/Load your current colorscheme and airline theme (automatically start/quit by default)
+- Save/Load your current colorscheme and airline theme (automatically when starting/quitting by default)
+    - now no need to change colorscheme settings again and again in your `.vimrc`
 - Toggle background color by executing `:ColorexToggleBackground` command
-- Switch contrast by executing `:ColorexSwitchContrast` (supporting gruvbox, solarized and NeoSolarized)
+    - supports [ayu](https://github.com/ayu-theme/ayu-vim)'s dark/mirage/light
+- Switch contrast by executing `:ColorexSwitchContrast`
+    - supports [gruvbox](https://github.com/morhetz/gruvbox), [solarized](https://github.com/altercation/vim-colors-solarized) and [NeoSolarized](https://github.com/overcache/NeoSolarized)
 
 ## Installation
 
-If you don't have your favorite plug-in manager, I strongly recommend
-[vim-plug](https://github.com/junegunn/vim-plug).
+I recommend [vim-plug](https://github.com/junegunn/vim-plug) as Vim plugin manager.
 
 ```vim
 Plug 'iwataka/colorex.vim'
