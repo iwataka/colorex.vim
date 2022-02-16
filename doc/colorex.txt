@@ -53,6 +53,13 @@ save/load it.
 Colorex automatically save/load global options for your current colorscheme
 and keep them even after changing colorscheme if this value is 1.
 
+------------------------------------------------------------------------------
+                                               *g:colorex_default_colorscheme*
+>
+    let g:colorex_default_colorscheme = ''
+<
+Colorex set this colorscheme if cache is not found.
+
 ==============================================================================
 COMMANDS                                                    *colorex-commands*
                                                         *colorex-:ColorexSave*

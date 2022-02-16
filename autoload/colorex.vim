@@ -12,14 +12,16 @@ endif
 " The name of global variable storing all colorscheme options.
 let s:option_map_key_name = '_colorex_colorscheme_option_map'
 
-fu! colorex#save()
+fu! colorex#save(warn)
   let lines = s:get_colorscheme_lines() + s:get_airline_lines()
   if !empty(lines)
     call writefile(lines, s:get_cache_file_path())
-    if g:colorex_enable_auto_cache
+    if a:warn
       call s:warn('This saved data will be overwritten on save.')
     endif
+    return 1
   endif
+  return 0
 endfu
 
 fu! colorex#clear()
@@ -75,7 +77,9 @@ endfu
 fu! colorex#load()
   if filereadable(s:get_cache_file_path())
     exe printf('source %s', s:get_cache_file_path())
+    return 1
   endif
+  return 0
 endfu
 
 fu! s:get_cache_file_path()
