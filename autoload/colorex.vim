@@ -130,6 +130,7 @@ let s:gruvbox_contrasts = ['soft', 'medium', 'hard']
 let s:colorex_contrast_list_map = {
       \ 'gruvbox': s:gruvbox_contrasts,
       \ 'gruvbox-material': s:gruvbox_contrasts,
+      \ 'everforest': s:gruvbox_contrasts,
       \ 'solarized': s:solarized_contrasts,
       \ 'NeoSolarized': s:solarized_contrasts,
       \ }
@@ -144,6 +145,8 @@ fu! s:get_contrast_varname()
       return 'gruvbox_contrast_'.&background
     elseif g:colors_name == 'gruvbox-material'
       return 'gruvbox_material_background'
+    elseif g:colors_name == 'everforest'
+      return 'everforest_background'
     else
       return s:get_var_prefix().'contrast'
     endif
