@@ -13,7 +13,7 @@ endif
 let s:option_map_key_name = '_colorex_colorscheme_option_map'
 
 fu! colorex#save(warn)
-  let lines = s:get_colorscheme_lines() + s:get_airline_lines()
+  let lines = s:get_colorscheme_lines() + s:get_airline_lines() + s:get_lightline_lines()
   if !empty(lines)
     call writefile(lines, s:get_cache_file_path())
     if a:warn
@@ -67,9 +67,23 @@ fu! s:get_colorscheme_option_lines()
 endfu
 
 fu! s:get_airline_lines()
-  if has_key(g:, 'airline_theme')
-    let theme = get(g:, 'airline_theme')
+  let theme = get(g:, 'airline_theme', '')
+  if !empty(theme)
     return [printf("silent! exe 'AirlineTheme %s'", theme)]
+  endif
+  return []
+endfu
+
+fu! s:get_lightline_lines()
+  let lightline = get(g:, 'lightline', {})
+  let theme = get(lightline, 'colorscheme', '')
+  if !empty(theme)
+    return [
+          \ printf("let g:lightline.colorscheme = '%s'", theme),
+          \ 'call lightline#init()',
+          \ 'call lightline#colorscheme()',
+          \ 'call lightline#update()',
+          \ ]
   endif
   return []
 endfu
