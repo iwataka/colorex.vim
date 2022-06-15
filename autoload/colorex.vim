@@ -79,6 +79,9 @@ fu! s:get_lightline_lines()
   let theme = get(lightline, 'colorscheme', '')
   if !empty(theme)
     return [
+          \ "if !has_key(g:, 'lightline')",
+          \ "    let g:lightline = {}",
+          \ "endif",
           \ printf("let g:lightline.colorscheme = '%s'", theme),
           \ 'call lightline#init()',
           \ 'call lightline#colorscheme()',
